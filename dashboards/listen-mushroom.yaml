@@ -1,0 +1,96 @@
+# Dashboard "Listen", Mushroom-Variante (schönere Kopfzeile mit Zählern)
+# Voraussetzung: HACS > Frontend > "Mushroom" installiert.
+#
+# Einfügen wie bei listen.yaml über den Raw-Konfigurationseditor.
+# Der Zustand einer todo-Entität ist die Anzahl offener Einträge,
+# daher funktionieren die Zähler ohne zusätzliche Sensoren.
+
+title: Listen
+views:
+  - title: Listen
+    path: listen
+    icon: mdi:format-list-checks
+    type: sections
+    max_columns: 3
+    sections:
+      # --- Kopfzeile -----------------------------------------------------
+      - type: grid
+        column_span: 3
+        cards:
+          - type: custom:mushroom-title-card
+            title: "{{ 'Guten Morgen' if now().hour < 11 else 'Hallo' }} 👋"
+            subtitle: >-
+              {% set n = states('todo.einkaufsliste') | int(0) %}
+              {{ n }} Artikel auf der Einkaufsliste
+          - type: custom:mushroom-chips-card
+            alignment: center
+            chips:
+              - type: template
+                entity: todo.einkaufsliste
+                icon: mdi:cart-outline
+                icon_color: green
+                content: "Einkauf {{ states(entity) }}"
+                tap_action:
+                  action: more-info
+              - type: template
+                entity: todo.haushalt
+                icon: mdi:broom
+                icon_color: blue
+                content: "Haushalt {{ states(entity) }}"
+                tap_action:
+                  action: more-info
+              - type: template
+                entity: todo.termine
+                icon: mdi:calendar-check-outline
+                icon_color: orange
+                content: "Termine {{ states(entity) }}"
+                tap_action:
+                  action: more-info
+
+      # --- Einkauf -------------------------------------------------------
+      - type: grid
+        cards:
+          - type: custom:mushroom-template-card
+            entity: todo.einkaufsliste
+            primary: Einkauf
+            secondary: >-
+              {% set n = states(entity) | int(0) %}
+              {{ 'Alles erledigt' if n == 0 else n ~ ' offen' }}
+            icon: mdi:cart-outline
+            icon_color: "{{ 'grey' if states(entity) | int(0) == 0 else 'green' }}"
+            badge_icon: "{{ 'mdi:check' if states(entity) | int(0) == 0 else '' }}"
+            badge_color: green
+          - type: todo-list
+            entity: todo.einkaufsliste
+            display_order: alpha_asc
+
+      # --- Haushalt ------------------------------------------------------
+      - type: grid
+        cards:
+          - type: custom:mushroom-template-card
+            entity: todo.haushalt
+            primary: Haushalt
+            secondary: >-
+              {% set n = states(entity) | int(0) %}
+              {{ 'Alles erledigt' if n == 0 else n ~ ' offen' }}
+            icon: mdi:broom
+            icon_color: "{{ 'grey' if states(entity) | int(0) == 0 else 'blue' }}"
+          - type: todo-list
+            entity: todo.haushalt
+            hide_completed: true
+
+      # --- Termine -------------------------------------------------------
+      - type: grid
+        cards:
+          - type: custom:mushroom-template-card
+            entity: todo.termine
+            primary: Termine
+            secondary: >-
+              {% set n = states(entity) | int(0) %}
+              {{ 'Nichts geplant' if n == 0 else n ~ ' offen' }}
+            icon: mdi:calendar-check-outline
+            icon_color: "{{ 'grey' if states(entity) | int(0) == 0 else 'orange' }}"
+          - type: todo-list
+            entity: todo.termine
+            hide_completed: true
+            display_order: duedate_asc

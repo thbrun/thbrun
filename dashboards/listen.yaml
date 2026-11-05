@@ -1,0 +1,85 @@
+# Dashboard "Listen": Einkauf, Haushalt, Termine
+# Nur eingebaute Karten, keine HACS-Abhängigkeit.
+#
+# Einfügen: Einstellungen > Dashboards > Dashboard hinzufügen > "Neues Dashboard"
+#           > Dashboard öffnen > ⋮ > Bearbeiten > ⋮ > Raw-Konfigurationseditor
+#           > alles ersetzen durch diesen Inhalt.
+#
+# Entitäten anpassen: Suche nach "todo." und ersetze die IDs durch deine eigenen
+# (Entwicklerwerkzeuge > Zustände > Filter "todo.").
+
+title: Listen
+views:
+  - title: Listen
+    path: listen
+    icon: mdi:format-list-checks
+    type: sections
+    max_columns: 3
+    sections:
+      # --- Übersicht -----------------------------------------------------
+      - type: grid
+        column_span: 3
+        cards:
+          - type: heading
+            heading: Übersicht
+            heading_style: title
+            icon: mdi:clipboard-list-outline
+          - type: tile
+            entity: todo.einkaufsliste
+            name: Einkauf
+            icon: mdi:cart-outline
+            color: green
+            grid_options:
+              columns: 4
+            tap_action:
+              action: more-info
+          - type: tile
+            entity: todo.haushalt
+            name: Haushalt
+            icon: mdi:broom
+            color: blue
+            grid_options:
+              columns: 4
+            tap_action:
+              action: more-info
+          - type: tile
+            entity: todo.termine
+            name: Termine
+            icon: mdi:calendar-check-outline
+            color: orange
+            grid_options:
+              columns: 4
+            tap_action:
+              action: more-info
+
+      # --- Einkauf -------------------------------------------------------
+      - type: grid
+        cards:
+          - type: heading
+            heading: Einkauf
+            icon: mdi:cart-outline
+          - type: todo-list
+            entity: todo.einkaufsliste
+            hide_completed: false
+            display_order: alpha_asc
+
+      # --- Haushalt ------------------------------------------------------
+      - type: grid
+        cards:
+          - type: heading
+            heading: Haushalt
+            icon: mdi:broom
+          - type: todo-list
+            entity: todo.haushalt
+            hide_completed: true
+
+      # --- Termine -------------------------------------------------------
+      - type: grid
+        cards:
+          - type: heading
+            heading: Termine
+            icon: mdi:calendar-check-outline
+          - type: todo-list
+            entity: todo.termine
+            hide_completed: true
+            display_order: duedate_asc
