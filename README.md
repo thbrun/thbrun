@@ -32,6 +32,18 @@ Dafür muss der Mac dauerhaft laufen.
 
 ## 3. Dashboard
 
+### Als neuer Reiter im bestehenden Dashboard «Zuhause» (empfohlen)
+
+Datei: [`dashboards/reiter-listen.yaml`](dashboards/reiter-listen.yaml). Damit bleibt der Rest des
+Dashboards unverändert.
+
+1. Dashboard «Zuhause» öffnen > ✏️ Bearbeiten
+2. Rechts neben den Reitern auf **+** (Ansicht hinzufügen)
+3. Im Dialog oben rechts ⋮ > **In YAML bearbeiten**
+4. Inhalt der Datei einfügen > Speichern > Fertig
+
+### Als eigenes Dashboard
+
 | Datei | Voraussetzung | Beschreibung |
 |-------|---------------|--------------|
 | [`dashboards/listen.yaml`](dashboards/listen.yaml) | keine | Abschnitte-Layout mit Übersichts-Tiles und je einer To-do-Karte pro Liste |

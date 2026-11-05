@@ -1,0 +1,78 @@
+# Neuer Reiter "Listen" für ein bestehendes Dashboard (z. B. "Zuhause")
+# Nur eingebaute Karten, keine HACS-Abhängigkeit.
+#
+# Einfügen, ohne den Rest des Dashboards anzufassen:
+#   1. Dashboard "Zuhause" öffnen > ✏️ (Bearbeiten)
+#   2. Rechts neben den Reitern auf "+" (Ansicht hinzufügen)
+#   3. Im Dialog oben rechts ⋮ > "In YAML bearbeiten"
+#   4. Alles ersetzen durch den Inhalt dieser Datei > Speichern > Fertig
+#
+# Vorher anpassen: die drei todo.-Entitäten unten durch deine eigenen IDs
+# ersetzen (Entwicklerwerkzeuge > Zustände > Filter "todo.").
+
+title: Listen
+path: listen
+icon: mdi:format-list-checks
+type: sections
+max_columns: 3
+sections:
+  # --- Übersicht ---------------------------------------------------------
+  - type: grid
+    column_span: 3
+    cards:
+      - type: heading
+        heading: Listen
+        heading_style: title
+        icon: mdi:clipboard-list-outline
+      - type: tile
+        entity: todo.einkaufsliste
+        name: Einkauf
+        icon: mdi:cart-outline
+        color: green
+        grid_options:
+          columns: 4
+      - type: tile
+        entity: todo.haushalt
+        name: Haushalt
+        icon: mdi:broom
+        color: blue
+        grid_options:
+          columns: 4
+      - type: tile
+        entity: todo.termine
+        name: Termine
+        icon: mdi:calendar-check-outline
+        color: orange
+        grid_options:
+          columns: 4
+
+  # --- Einkauf -----------------------------------------------------------
+  - type: grid
+    cards:
+      - type: heading
+        heading: Einkauf
+        icon: mdi:cart-outline
+      - type: todo-list
+        entity: todo.einkaufsliste
+        display_order: alpha_asc
+
+  # --- Haushalt ----------------------------------------------------------
+  - type: grid
+    cards:
+      - type: heading
+        heading: Haushalt
+        icon: mdi:broom
+      - type: todo-list
+        entity: todo.haushalt
+        hide_completed: true
+
+  # --- Termine -----------------------------------------------------------
+  - type: grid
+    cards:
+      - type: heading
+        heading: Termine
+        icon: mdi:calendar-check-outline
+      - type: todo-list
+        entity: todo.termine
+        hide_completed: true
+        display_order: duedate_asc
